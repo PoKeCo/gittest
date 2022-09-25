@@ -1,3 +1,6 @@
+trj_th=deg2rad((0:-1:-45)');
+trj_R=100;
+trj_pos=[trj_R*sin(trj_th),trj_R-trj_R*cos(trj_th),trj_th];
 
 
 world_w =2.75/2;
@@ -22,6 +25,7 @@ camFrame=[-1,+1,-9/16,+9/16];
 init=1;
 path1=[];
 path2=[];
+k=1;
 for t=10:-0.5:-10
     %th=deg2rad(t);
     %camPos=[cos(th)*7.5,sin(th)*7.5,2.2,deg2rad(0),deg2rad(t+180),deg2rad(0)];    
@@ -32,7 +36,9 @@ for t=10:-0.5:-10
     %camPos=[t,0,1.2,deg2rad(th1),deg2rad(th2),deg2rad(th3)];    
     %camPos=[t,0,1.2,deg2rad(0),deg2rad(0),deg2rad(0)];    
     %camPos=[100*sin(t/10*pi/4),100+100*cos(t/10*pi/4),1.2,deg2rad(0),deg2rad(0),deg2rad(0)];    
-    camPos=[t,0,1.2,deg2rad(0),deg2rad(0),deg2rad(th1)];
+    %camPos=[t,0,1.2,deg2rad(0),deg2rad(0),deg2rad(th1)];
+    camPos=[trj_pos(k,1),trj_pos(k,2),1.2,deg2rad(0),trj_pos(k,3),deg2rad(0)];
+    k=k+1;
     [cam,camRot,camOfs]=world2cam(world_paint,camF,camPos);
     
     if(1)
@@ -80,13 +86,15 @@ for t=10:-0.5:-10
     %cam_xeyeze1(:,1),cam_xeyeze1(:,2),'s',...
 
     figure(1);
+    subplot(2,1,1);
     plot(cam_xeyeze1(:,1),cam_xeyeze1(:,2),'sr',...
          cam_xeyeze2(:,1),cam_xeyeze2(:,2),'.-y',...
          cam(:,1),cam(:,2),'x-b'         );
     axis equal;
     axis(camFrame);    
     %pause(1);
-    figure(2);
+    %figure(2);
+    subplot(2,1,2);
     plot3(path2(:,1),path2(:,2),path2(:,3));
     axis equal;
     drawnow;
