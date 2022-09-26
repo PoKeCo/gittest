@@ -41,24 +41,28 @@ function [cam,rot,ofs]=world2cam(world,f,pos)
            0,+cos_roll,-sin_roll;
            0,+sin_roll,+cos_roll]';
     
-    rot=Rpitch*Ryaw*Rroll;    
+    rot=Ryaw*Rpitch*Rroll;    
     C=(world-Pofs)*rot;
     
     j=0;
     cam_size=0;
     cam_full=zeros(world_size,2);
+    %idx_full=(1:world_size)';
     for i=1:world_size
         if( x_start<C(i,1) && C(i,1) <= x_end )
             j=j+1;     
             cam_full(j,1)=-f*C(i,2)/C(i,1);
             cam_full(j,2)=+f*C(i,3)/C(i,1);
             cam_size=j;
+            %idx_full(j,1)=i;
         end
     end    
     if(cam_size~=0)
         cam=cam_full(1:cam_size,:);
+        %idx=idx_full(1:cam_size,:);
     else
         cam=cam_full;
+        %idx=idx_full;
     end
         
 end
